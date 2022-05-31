@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
-import Layout from "../../components/Layout";
+import Layout from "@/components/Layout";
+import styles from "@/styles/EventItem.module.css";
 
 export default function EventPage() {
   const router = useRouter();
