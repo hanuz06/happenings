@@ -3,7 +3,6 @@ import Layout from "@/components/Layout";
 import { API_URL } from "@/config/index";
 
 export default function EventPage({ events }) {
-  console.log(events);
 
   return (
     <Layout>
@@ -17,11 +16,11 @@ export default function EventPage({ events }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(`${API_URL}/api/events`);
+  const res = await fetch(`${API_URL}/api/events?_sort=date:ASC&populate=*`);
   const events = await res.json();
-
+console.log("event page 1111= ", events.data[0].attributes.image.data.attributes.formats.thumbnail.url);
   return {
-    props: { events },
+    props: { events: events.data },
     revalidate: 1,
   };
 }

@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function EventPage({ evt }) {
+  let eventData = evt.attributes;
   const deleteEvent = (e) => {
     console.log("delete");
   };
@@ -14,7 +15,7 @@ export default function EventPage({ evt }) {
     <Layout>
       <div className={styles.event}>
         <div className={styles.controls}>
-          <Link href={`/events/edit/${evt.di}`}>
+          <Link href={`/events/edit/${eventData.id}`}>
             <a>
               <FaPencilAlt /> Edit Event
             </a>
@@ -24,20 +25,20 @@ export default function EventPage({ evt }) {
           </a>
         </div>
         <span>
-          {evt.date} at {evt.time}
+          {eventData.date} at {eventData.time}
         </span>
-        <h1>{evt.name}</h1>
-        {evt.image && (
+        <h1>{eventData.name}</h1>
+        {eventData.image && (
           <div className={styles.image}>
-            <Image src={evt.image} width={960} height={600} />
+            <Image src={eventData.image.data.attributes.formats.thumbnail.url} width={960} height={600} />
           </div>
         )}
         <h3>Performers:</h3>
-        <p>{evt.performers}</p>
+        <p>{eventData.performers}</p>
         <h3>Description</h3>
-        <p>{evt.description}</p>
-        <h3>Venue: {evt.venue}</h3>
-        <p>{evt.address}</p>
+        <p>{eventData.description}</p>
+        <h3>Venue: {eventData.venue}</h3>
+        <p>{eventData.address}</p>
 
         <Link href='/events'>
           <a className={styles.back}>{"<"} Go Back</a>
@@ -48,11 +49,11 @@ export default function EventPage({ evt }) {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch(`${API_URL}/api/events`);
+  const res = await fetch(`${API_URL}/api/events?_sort=date:ASC&populate=*`);
   const events = await res.json();
-
-  const paths = events.map((evt) => ({
-    params: { slug: evt.slug },
+  console.log("events events events= ", events);
+  const paths = events.data.map((evt) => ({
+    params: { slug: evt.attributes.slug },
   }));
   return {
     paths,
@@ -61,11 +62,11 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { slug } }) {
-  const res = await fetch(`${API_URL}/api/events/${slug}`);
+  const res = await fetch(`${API_URL}/api/events?slug=${slug}&populate=*`);
   const events = await res.json();
-  console.log(slug);
+  console.log("CURRENT events 55555555=", events.data[0]);
   return {
-    props: { evt: events[0] },
+    props: { evt: events.data[0] },
     revalidate: 1,
   };
 }
