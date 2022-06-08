@@ -4,18 +4,36 @@ import styles from "@/styles/Event.module.css";
 import { API_URL } from "@/config/index";
 import Link from "next/link";
 import Image from "next/image";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/router";
 
 export default function EventPage({ evt }) {
-  let eventData = evt.attributes;
-  const deleteEvent = (e) => {
-    console.log("delete");
+  let eventData = evt[0].attributes;
+  const router = useRouter();
+
+  const deleteEvent = async (e) => {
+    if (confirm("Are you surer?")) {
+      const res = await fetch(`${API_URL}/api/events/${evt[0].id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.message);
+      } else {
+        toast.success("Item deleted successfully!"); 
+        router.push("/events");
+      }
+    }
   };
 
   return (
     <Layout>
       <div className={styles.event}>
         <div className={styles.controls}>
-          <Link href={`/events/edit/${eventData.id}`}>
+          <Link href={`/events/edit/${evt[0].id}`}>
             <a>
               <FaPencilAlt /> Edit Event
             </a>
@@ -25,12 +43,18 @@ export default function EventPage({ evt }) {
           </a>
         </div>
         <span>
-          {eventData.date} at {eventData.time}
+          {new Date(eventData.date).toLocaleDateString("en-US")} at{" "}
+          {eventData.time}
         </span>
         <h1>{eventData.name}</h1>
-        {eventData.image && (
+        <ToastContainer />
+        {eventData.image.data && (
           <div className={styles.image}>
-            <Image src={eventData.image.data.attributes.formats.thumbnail.url} width={960} height={600} />
+            <Image
+              src={eventData.image.data.attributes.formats.thumbnail.url}
+              width={960}
+              height={600}
+            />
           </div>
         )}
         <h3>Performers:</h3>
@@ -49,9 +73,8 @@ export default function EventPage({ evt }) {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch(`${API_URL}/api/events?_sort=date:ASC&populate=*`);
+  const res = await fetch(`${API_URL}/api/events`);
   const events = await res.json();
-  console.log("events events events= ", events);
   const paths = events.data.map((evt) => ({
     params: { slug: evt.attributes.slug },
   }));
@@ -64,18 +87,16 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params: { slug } }) {
   const res = await fetch(`${API_URL}/api/events?slug=${slug}&populate=*`);
   const events = await res.json();
-  console.log("CURRENT events 55555555=", events.data[0]);
   return {
-    props: { evt: events.data[0] },
+    props: { evt: events.data.filter((evt) => evt.attributes.slug == slug) },
     revalidate: 1,
   };
 }
 
 // export async function getServerSideProps({ query: { slug } }) {
-//   const res = await fetch(`${API_URL}/api/events/${slug}`);
+//   const res = await fetch(`${API_URL}/api/events/${slug}&populate=*`);
 //   const events = await res.json();
-//   console.log(slug);
 //   return {
-//     props: { evt: events[0] },
+//     props: { evt: events.data.filter((evt) => evt.attributes.slug == slug) },
 //   };
 // }

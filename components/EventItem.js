@@ -8,14 +8,14 @@ export default function EventItem({ evt }) {
     <div className={styles.event}>
       <div className={styles.img}>
         <Image
-          src={eventData.image ? eventData.image.data.attributes.formats.thumbnail.url : "/images/event-default.png"}
+          src={eventData.image.data ? eventData.image.data.attributes.formats.thumbnail.url : "/images/event-default.png"}
           width={170}
           height={100}
         />
       </div>
       <div className={styles.info}>
         <span>
-          {eventData.date} at {eventData.time}
+          {new Date(eventData.date).toLocaleDateString('en-US')} at {eventData.time}
         </span>
         <h3>{evt.name}</h3>
       </div>
