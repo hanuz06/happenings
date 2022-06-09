@@ -34,14 +34,14 @@ export const AuthProvider = ({ children }) => {
   }
 
   // Login user
-  const login = async ({ email: identifier, password }) => {
-    const res = await fetch(`${NEXT_URL}/auth/local/login`, {
+  const login = async ({ email, password }) => {
+    const res = await fetch(`${NEXT_URL}/api/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        identifier,
+        identifier: email,
         password,
       }),
     })
@@ -53,17 +53,15 @@ export const AuthProvider = ({ children }) => {
       router.push('/account/dashboard')
     } else {
       setError(data.message)
-      setError(null)
     }
   }
 
   // Logout user
   const logout = async () => {
     // /api/logout
-    const res = await fetch(`${NEXT_URL}/auth/local/logout`, {
+    const res = await fetch(`${NEXT_URL}/api/logout`, {
       method: 'POST',
     })
-
     if (res.ok) {
       setUser(null)
       router.push('/')
