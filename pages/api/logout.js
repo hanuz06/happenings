@@ -15,7 +15,7 @@ export default async (req, res) => {
       })
     )
 
-    res.status(200).json({ message: 'Success' })
+    res.status(200).json({ message: 'Cookie deleted...' })
   } else {
     res.setHeader('Allow', ['POST'])
     res.status(405).json({ message: `Method ${req.method} not allowed` })

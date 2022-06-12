@@ -17,6 +17,7 @@ export default function AddEventPage({ token }) {
     date: "",
     time: "",
     description: "",
+    user: 1
   });
 
   const router = useRouter();
@@ -37,11 +38,11 @@ export default function AddEventPage({ token }) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(values),
+      body: JSON.stringify({data: values}),
     });
-    console.log("res added event=", res);
+   
     if (!res.ok) {
       if (res.status === 403 || res.status === 401) {
         toast.error("No token included");
@@ -50,7 +51,8 @@ export default function AddEventPage({ token }) {
       toast.error("Something Went Wrong");
     } else {
       const evt = await res.json();
-      router.push(`/events/${evt.slug}`);
+      
+      router.push(`/events/${evt.data.attributes.slug}`);
     }
   };
 
@@ -146,11 +148,11 @@ export default function AddEventPage({ token }) {
 }
 
 export async function getServerSideProps({ req }) {
-  // const { token } = parseCookies(req)
+  const { token } = parseCookies(req)
 
   return {
     props: {
-      token: "",
+      token: token,
     },
   };
 }

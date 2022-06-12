@@ -87,6 +87,8 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params: { slug } }) {
   const res = await fetch(`${API_URL}/api/events?slug=${slug}&populate=*`);
   const events = await res.json();
+  console.log("events in eventsPage2222= ", events);
+  console.log("events in eventsPage2222= ", events);
   return {
     props: { evt: events.data.filter((evt) => evt.attributes.slug == slug) },
     revalidate: 1,
