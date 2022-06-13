@@ -44,7 +44,6 @@ export async function getServerSideProps({ query: { page = 1 } }) {
   const events = await axios(
     `${API_URL}/api/events?${query}&_sort=date:ASC&populate=*`
   );
-  console.log("events99= ", events.data.meta.pagination);
   return {
     props: {
       events: events.data.data,

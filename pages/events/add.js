@@ -16,8 +16,7 @@ export default function AddEventPage({ token }) {
     address: "",
     date: "",
     time: "",
-    description: "",
-    user: 1
+    description: ""
   });
 
   const router = useRouter();
@@ -51,8 +50,7 @@ export default function AddEventPage({ token }) {
       toast.error("Something Went Wrong");
     } else {
       const evt = await res.json();
-      
-      router.push(`/events/${evt.data.attributes.slug}`);
+      router.push(`/events/${evt.data.slug}`);
     }
   };
 
