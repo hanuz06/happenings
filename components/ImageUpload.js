@@ -2,15 +2,26 @@ import { useState } from "react";
 import { API_URL } from "@/config/index";
 import styles from "@/styles/Form.module.css";
 
-export default function ImageUpload({ evtId, imageUploaded, token }) {
+export default function ImageUpload({ evtId, imageUploaded, token, imageId }) {
   const [image, setImage] = useState(null);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // In order to replace an image for Strapi event's the old image needs to be deleted first
+    await fetch(`${API_URL}/api/upload/files/${imageId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
     const formData = new FormData();
     formData.append("files", image);
     formData.append("ref", "api::event.event");
     formData.append("refId", evtId);
     formData.append("field", "image");
+
     const res = await fetch(`${API_URL}/api/upload`, {
       method: "POST",
       headers: {

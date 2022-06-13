@@ -7,43 +7,40 @@ import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 export default function EventPage({ evt }) {
   const router = useRouter();
-  const deleteEvent = async (e) => {
-    if (confirm("Are you surer?")) {
-      const res = await fetch(`${API_URL}/api/events/${evt.id}`, {
-        method: "DELETE",
-      });
+  // const deleteEvent = async (e) => {
+  //   if (confirm("Are you surer?")) {
+  //     const res = await axios(`${API_URL}/api/events/${evt.id}`, {
+  //       method: "DELETE",
+  //     });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        toast.error(data.message);
-      } else {
-        toast.success("Item deleted successfully!");
-        router.push("/events");
-      }
-    }
-  };
+  //     if (!res.ok) {
+  //       toast.error(res.data.message);
+  //     } else {
+  //       toast.success("Item deleted successfully!");
+  //       router.push("/events");
+  //     }
+  //   }
+  // };
 
   return (
     <Layout>
       <div className={styles.event}>
         <div className={styles.controls}>
-          <Link href={`/events/edit/${evt.id}`}>
+          {/* <Link href={`/events/edit/${evt.id}`}>
             <a>
               <FaPencilAlt /> Edit Event
             </a>
           </Link>
           <a href='#' className={styles.delete} onClick={deleteEvent}>
             <FaTimes /> Delete Event
-          </a>
+          </a> */}
         </div>
         <span>
-          {new Date(evt.date).toLocaleDateString("en-US")}
-          at
-          {evt.time}
+          {new Date(evt.date).toLocaleDateString("en-US")} at {evt.time}
         </span>
         <h1>{evt.name}</h1>
         <ToastContainer />
@@ -72,9 +69,8 @@ export default function EventPage({ evt }) {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch(`${API_URL}/api/events`);
-  const events = await res.json();
-  const paths = events.data.map((evt) => ({
+  const events = await axios(`${API_URL}/api/events`);
+  const paths = events.data.data.map((evt) => ({
     params: { slug: evt.attributes.slug },
   }));
   return {
@@ -84,13 +80,12 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { slug } }) {
-  const res = await fetch(
+  const foundEvent = await axios(
     `${API_URL}/api/events?filters[slug][$eq]=${slug}&_sort=date:ASC&populate=*`
   );
-  const foundEvent = await res.json();  
   return {
     props: {
-      evt: { id: foundEvent.data[0].id, ...foundEvent.data[0].attributes },
+      evt: { id: foundEvent.data.data[0].id, ...foundEvent.data.data[0].attributes },
     },
     revalidate: 1,
   };

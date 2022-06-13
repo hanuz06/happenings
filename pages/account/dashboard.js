@@ -4,6 +4,7 @@ import Layout from "@/components/Layout";
 import DashboardEvent from "@/components/DashboardEvent";
 import { API_URL } from "@/config/index";
 import styles from "@/styles/Dashboard.module.css";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function DashboardPage({ events, token }) {
   const router = useRouter();
@@ -17,18 +18,19 @@ export default function DashboardPage({ events, token }) {
       });
 
       const data = await res.json();
-
       if (!res.ok) {
         toast.error(data.message);
       } else {
+        // router.push("/events");
         router.reload();
       }
     }
   };
- 
+
   return (
     <Layout title='User Dashboard'>
       <div className={styles.dash}>
+        <ToastContainer />
         <h1>Dashboard</h1>
         <h3>My Events</h3>
 

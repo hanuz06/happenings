@@ -12,6 +12,7 @@ import Modal from "@/components/Modal";
 import ImageUpload from "@/components/ImageUpload";
 import { API_URL } from "@/config/index";
 import styles from "@/styles/Form.module.css";
+import axios from "axios";
 
 export default function EditEventPage({ evt, token }) {
   let eventData = evt.attributes;
@@ -25,7 +26,9 @@ export default function EditEventPage({ evt, token }) {
     description: eventData.description,
   });
   const [imagePreview, setImagePreview] = useState(
-    eventData.image.data ? eventData.image.data.attributes.formats.thumbnail.url : null
+    eventData.image.data
+      ? eventData.image.data.attributes.formats.thumbnail.url
+      : null
   );
   const [showModal, setShowModal] = useState(false);
 
@@ -42,25 +45,24 @@ export default function EditEventPage({ evt, token }) {
     if (hasEmptyFields) {
       toast.error("Please fill in all fields");
     }
-
-    const res = await fetch(`${API_URL}/api/events/${evt.id}`, {
+    const res = await axios(`${API_URL}/api/events/${evt.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        // Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(values),
+      data: JSON.stringify(values),
     });
 
-    if (!res.ok) {
+    if (res.status !== 200) {
       if (res.status === 403 || res.status === 401) {
         toast.error("Unauthorized");
         return;
       }
       toast.error("Something Went Wrong");
     } else {
-      const updatedEvent = await res.json();
-      router.push(`/events/${updatedEvent[0].attributes.slug}`);
+      // const updatedEvent = await res.json();
+      router.push(`/events/${res.data.data.slug}`);
     }
   };
 
@@ -70,9 +72,12 @@ export default function EditEventPage({ evt, token }) {
   };
 
   const imageUploaded = async (e) => {
-    const res = await fetch(`${API_URL}/api/events/${evt.id}?populate=*`);
-    const data = await res.json();
-    setImagePreview(data.data.attributes.image.data.attributes.formats.thumbnail.url);
+    const res = await axios(`${API_URL}/api/events/${evt.id}?populate=*`);
+    // const data = await res.json();
+    console.log("uploaded image 88888= ", res);
+    setImagePreview(
+      res.data.data.attributes.image.data.attributes.formats.thumbnail.url
+    );
     setShowModal(false);
   };
 
@@ -182,21 +187,22 @@ export default function EditEventPage({ evt, token }) {
           evtId={evt.id}
           imageUploaded={imageUploaded}
           token={token}
-        /> 
+          imageId={eventData.image.data.id}
+        />
       </Modal>
     </Layout>
   );
 }
 
 export async function getServerSideProps({ params: { id }, req }) {
-  // const { token } = parseCookies(req)
+  const { token } = parseCookies(req);
 
-  const res = await fetch(`${API_URL}/api/events/${id}?populate=*`);
-  const evt = await res.json();
+  const res = await axios(`${API_URL}/api/events/${id}?populate=*`);
+  // const evt = await res.json();
   return {
     props: {
-      evt:evt.data,
-      token: "",
+      evt: res.data.data,
+      token,
     },
   };
 }

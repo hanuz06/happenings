@@ -17,7 +17,7 @@ export default function Modal({ show, onClose, children, title }) {
     <div className={styles.overlay}>
       <div className={styles.modal}>
         <div className={styles.header}>
-          <a href='#' onClick={handleClose}>
+          <a href='' onClick={handleClose}>
             <FaTimes />
           </a>
         </div>
