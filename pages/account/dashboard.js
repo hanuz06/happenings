@@ -45,7 +45,6 @@ export default function DashboardPage({ events, token }) {
 
 export async function getServerSideProps({ req }) {
   const { token } = parseCookies(req);
-
   const res = await fetch(`${API_URL}/api/events/me?populate=*`, {
     method: "GET",
     headers: {
