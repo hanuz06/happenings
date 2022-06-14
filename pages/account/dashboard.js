@@ -22,6 +22,7 @@ export default function DashboardPage({ events, token }) {
       } else {
         // router.reload();
         window.location.reload(true);
+        
       }
     }
   };
@@ -33,7 +34,7 @@ export default function DashboardPage({ events, token }) {
         <h1>Dashboard</h1>
         <h3>My Events</h3>
 
-        {!!events &&
+        {!!events.length &&
           events.map((evt) => (
             <DashboardEvent key={evt.id} evt={evt} handleDelete={deleteEvent} />
           ))}
