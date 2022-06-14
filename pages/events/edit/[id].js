@@ -202,7 +202,7 @@ export async function getServerSideProps({ params: { id }, req }) {
   console.log('found event by event id 2222222=', res.data);
   return {
     props: {
-      evt: res.data.data,
+      evt: res.data.data[0],
       token,
     },
   };
