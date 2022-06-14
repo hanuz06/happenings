@@ -183,10 +183,10 @@ export default function EditEventPage({ evt, token }) {
 
       <Modal show={showModal} onClose={() => setShowModal(false)}>     
           <ImageUpload
-            evtId={evt?.id}
+            evtId={evt.id}
             imageUploaded={imageUploaded}
             token={token}
-            imageId={evt.image?.data.id}
+            // imageId={evt.image?.data.id}
           />    
       </Modal>
     </Layout>
