@@ -16,6 +16,8 @@ import axios from "axios";
 
 export default function EditEventPage({ evt, token }) {
   let eventData = evt.attributes;
+  console.log('EditEventPage evt 8888= ', evt);
+  console.log('EditEventPage token 9999= ', token);
   const [values, setValues] = useState({
     name: eventData.name,
     performers: eventData.performers,
