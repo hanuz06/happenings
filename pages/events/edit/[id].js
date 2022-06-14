@@ -14,9 +14,7 @@ import { API_URL } from "@/config/index";
 import styles from "@/styles/Form.module.css";
 import axios from "axios";
 
-export default function EditEventPage({ evt, token }) {
-  console.log("EditEventPage evt 8888= ", evt);
-  console.log("EditEventPage token 9999= ", token);
+export default function EditEventPage({ evt, token }) { 
   const [values, setValues] = useState({
     name: evt.name,
     performers: evt.performers,
