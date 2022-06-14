@@ -25,9 +25,7 @@ export default function EditEventPage({ evt, token }) {
     description: evt.description,
   });
   const [imagePreview, setImagePreview] = useState(
-    evt.image.data
-      ? evt.image.data.attributes.formats.thumbnail.url
-      : null
+    evt?.image.data ? evt.image.data.attributes.formats.thumbnail.url : null
   );
   const [showModal, setShowModal] = useState(false);
 
@@ -179,13 +177,13 @@ export default function EditEventPage({ evt, token }) {
         </button>
       </div>
 
-      <Modal show={showModal} onClose={() => setShowModal(false)}>     
-          <ImageUpload
-            evtId={evt.id}
-            imageUploaded={imageUploaded}
-            token={token}
-            imageId={evt.image?.data.id}
-          />    
+      <Modal show={showModal} onClose={() => setShowModal(false)}>
+        <ImageUpload
+          evtId={evt.id}
+          imageUploaded={imageUploaded}
+          token={token}
+          imageId={!!evt.image?.data ? evt.image.data.id : ""}
+        />
       </Modal>
     </Layout>
   );
@@ -195,8 +193,8 @@ export async function getServerSideProps({ params: { id }, req }) {
   const { token } = parseCookies(req);
 
   const res = await axios(
-    `${API_URL}/api/events?filters[id][$eq]=${id}&_sort=date:ASC&populate=*`
-  );
+    `${API_URL}/api/events?filters[id][$eq]=${id}&populate=*`
+  ); 
   return {
     props: {
       evt: { id: res.data.data[0].id, ...res.data.data[0].attributes },

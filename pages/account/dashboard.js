@@ -5,26 +5,23 @@ import DashboardEvent from "@/components/DashboardEvent";
 import { API_URL } from "@/config/index";
 import styles from "@/styles/Dashboard.module.css";
 import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
 
 export default function DashboardPage({ events, token }) {
   const router = useRouter();
   const deleteEvent = async (id) => {
     if (confirm("Are you sure?")) {
-      console.log('DELETING EVENTS ID8888= ', id)
-      console.log('DELETING EVENTS token999999= ', token)
-      const res = await fetch(`${API_URL}/api/events/${id}`, {
+      const res = await axios(`${API_URL}/api/events/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      const data = await res.json();
-      if (!res.ok) {
-        toast.error(data.message);
+      if (res.status !== 200) {
+        toast.error(res.message);
       } else {
-        // router.push("/events");
-        router.reload();
+        // router.reload();
+        window.location.reload(true);
       }
     }
   };
