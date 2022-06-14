@@ -7,7 +7,7 @@ export default function ImageUpload({ evtId, imageUploaded, token, imageId }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log("imageid for delete 22222222=", imageId);
     // In order to replace an image for Strapi event's the old image needs to be deleted first
     {
       !!imageId &&
