@@ -10,6 +10,8 @@ export default function DashboardPage({ events, token }) {
   const router = useRouter();
   const deleteEvent = async (id) => {
     if (confirm("Are you sure?")) {
+      console.log('DELETING EVENTS ID8888= ', id)
+      console.log('DELETING EVENTS token999999= ', token)
       const res = await fetch(`${API_URL}/api/events/${id}`, {
         method: "DELETE",
         headers: {
