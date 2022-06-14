@@ -9,12 +9,13 @@ export default function ImageUpload({ evtId, imageUploaded, token, imageId }) {
     e.preventDefault();
 
     // In order to replace an image for Strapi event's the old image needs to be deleted first
-    await fetch(`${API_URL}/api/upload/files/${imageId}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    !!imageId &&
+      (await fetch(`${API_URL}/api/upload/files/${imageId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }));
 
     const formData = new FormData();
     formData.append("files", image);
