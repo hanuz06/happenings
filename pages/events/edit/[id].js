@@ -15,21 +15,20 @@ import styles from "@/styles/Form.module.css";
 import axios from "axios";
 
 export default function EditEventPage({ evt, token }) {
-  let eventData = evt.attributes;
-  console.log('EditEventPage evt 8888= ', evt);
-  console.log('EditEventPage token 9999= ', token);
+  console.log("EditEventPage evt 8888= ", evt);
+  console.log("EditEventPage token 9999= ", token);
   const [values, setValues] = useState({
-    name: eventData.name,
-    performers: eventData.performers,
-    venue: eventData.venue,
-    address: eventData.address,
-    date: eventData.date,
-    time: eventData.time,
-    description: eventData.description,
+    name: evt.name,
+    performers: evt.performers,
+    venue: evt.venue,
+    address: evt.address,
+    date: evt.date,
+    time: evt.time,
+    description: evt.description,
   });
   const [imagePreview, setImagePreview] = useState(
-    eventData.image.data
-      ? eventData.image.data.attributes.formats.thumbnail.url
+    evt.image.data
+      ? evt.image.data.attributes.formats.thumbnail.url
       : null
   );
   const [showModal, setShowModal] = useState(false);
@@ -75,8 +74,6 @@ export default function EditEventPage({ evt, token }) {
 
   const imageUploaded = async (e) => {
     const res = await axios(`${API_URL}/api/events/${evt.id}?populate=*`);
-    // const data = await res.json();
-    console.log("uploaded image 88888= ", res);
     setImagePreview(
       res.data.data.attributes.image.data.attributes.formats.thumbnail.url
     );
@@ -185,12 +182,14 @@ export default function EditEventPage({ evt, token }) {
       </div>
 
       <Modal show={showModal} onClose={() => setShowModal(false)}>
-        <ImageUpload
-          evtId={evt.id}
-          imageUploaded={imageUploaded}
-          token={token}
-          imageId={eventData.image.data.id}
-        />
+        {!!evt.image.data && (
+          <ImageUpload
+            evtId={evt.id}
+            imageUploaded={imageUploaded}
+            token={token}
+            imageId={evt.image.data.id}
+          />
+        )}
       </Modal>
     </Layout>
   );
@@ -199,10 +198,12 @@ export default function EditEventPage({ evt, token }) {
 export async function getServerSideProps({ params: { id }, req }) {
   const { token } = parseCookies(req);
 
-  const res = await axios(`${API_URL}/api/events?filters[id][$eq]=${id}&_sort=date:ASC&populate=*`);
+  const res = await axios(
+    `${API_URL}/api/events?filters[id][$eq]=${id}&_sort=date:ASC&populate=*`
+  );
   return {
     props: {
-      evt: res.data.data[0],
+      evt: { id: res.data.data[0].id, ...res.data.data[0].attributes },
       token,
     },
   };
