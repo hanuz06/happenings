@@ -184,7 +184,7 @@ export default function EditEventPage({ evt, token }) {
             evtId={evt.id}
             imageUploaded={imageUploaded}
             token={token}
-            imageId={evt.image?.data?.id}
+            imageId={evt.image?.data.id}
           />    
       </Modal>
     </Layout>
