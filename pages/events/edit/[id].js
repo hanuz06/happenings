@@ -197,8 +197,9 @@ export default function EditEventPage({ evt, token }) {
 export async function getServerSideProps({ params: { id }, req }) {
   const { token } = parseCookies(req);
 
-  const res = await axios(`${API_URL}/api/events/${id}?populate=*`);
+  const res = await axios(`${API_URL}/api/events?filters[id][$eq]=${id}&_sort=date:ASC&populate=*`);
   // const evt = await res.json();
+  console.log('found event by event id 2222222=', res.data);
   return {
     props: {
       evt: res.data.data,
