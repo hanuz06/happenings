@@ -15,7 +15,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     error && toast.error(error);
-  },[error]);
+  }, [error]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -53,7 +53,7 @@ export default function LoginPage() {
         </form>
 
         <p>
-          Don't have an account? <Link href='/account/register'>Register</Link>
+          Don&lsquo;t have an account? <Link href='/account/register'>Register</Link>
         </p>
       </div>
     </Layout>
