@@ -1,14 +1,17 @@
-## Find the upcoming festivals and gatherings
+## Find your upcoming festivals and gatherings
 
 This is [an app](https://happenings.vercel.app/) to find upcoming events. Users can register for the app,  see event's detail information including location on the map, as well as add/edit/delete events. 
 
 - The app's backend is based on Strapi and loaded to Heroku with Postgres as database 👉: [Backend Github's repository](https://github.com/hanuz06/happenings-backend) - learn about Next.js features and API.
-- Current data can be seen here 👉: [Backend data](https://happenings-backend.herokuapp.com/api/events) 
+- Current data can be seen here 👉: [Backend data](https://happenings-backend.herokuapp.com/api/events)
+- Test user credentials: 
+  - username: test
+  - email: test@test.com
+  - password: 123456
 
 ## Dependencies
 
 - nextjs 12.1.6
-- npm 8.x or above
 - react-geocode ^0.2.3
 - react-icons ^4.3.1
 - react-map-gl ^6.1.12
