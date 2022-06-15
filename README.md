@@ -1,35 +1,20 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Find the upcoming festivals and gatherings
 
-## Getting Started
+This is [an app](https://happenings.vercel.app/) to find upcoming events. Users can register for the app,  see event's detail information including location on the map, as well as add/edit/delete events. 
 
-First, run the development server:
+- The app's backend is based on Strapi and loaded to Heroku with Postgres as database 👉: [Backend Github's repository](https://github.com/hanuz06/happenings-backend) - learn about Next.js features and API.
+- Current data can be seen here 👉: [Backend data](https://happenings-backend.herokuapp.com/api/events) 
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## Dependencies
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-# happenings
+- nextjs 12.1.6
+- npm 8.x or above
+- react-geocode ^0.2.3
+- react-icons ^4.3.1
+- react-map-gl ^6.1.12
+- react-toastify ^9.0.3
+- qs ^6.10.3
+- moment ^2.29.3
+- strapi v4
+- pg ^8.7.3
+- slugify ^1.6.5
